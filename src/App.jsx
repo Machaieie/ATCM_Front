@@ -10,7 +10,8 @@ import Unauthorized from "./screens/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Eventos from "./screens/eventos/Eventos"
+import Bilhetes from "./screens/bilhetes/Bilhetes"
 import Users from "./screens/usuarios/Users";
 import Movimentos from "./screens/moviments/Movimentos";
 
@@ -31,9 +32,10 @@ function App() {
 
           <Route element={<AdminLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
-           
-            <Route path="movimentos" element={<Movimentos />} />
 
+            <Route path="movimentos" element={<Movimentos />} />
+            <Route path="eventos" element={<Eventos />} />
+            <Route path="bilhetes" element={<Bilhetes />} />
             <Route path="users" element={<Users />} />
             <Route path="configuracoes" element={<Configuracoes />} />
           </Route>

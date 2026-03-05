@@ -42,7 +42,7 @@ const SideNav = ({ role, collapsed, onCollapse, onLogout }) => {
         left: 0,
         top: 0,
         height: '100vh',
-        background: '#001529',
+        background: '#0f0f0f',
         borderRight: 'none',
         display: 'flex',
         flexDirection: 'column',
@@ -57,7 +57,7 @@ const SideNav = ({ role, collapsed, onCollapse, onLogout }) => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          borderBottom: '1px solid #1f1f1f',
           transition: '0.3s',
         }}
       >
@@ -65,7 +65,7 @@ const SideNav = ({ role, collapsed, onCollapse, onLogout }) => {
           size={collapsed ? 40 : 64}
           src={user?.photo || null}
           icon={!user?.photo && <UserOutlined />}
-          style={{ backgroundColor: '#1890ff' }}
+          style={{ backgroundColor: '#FFD700',color: '#000' }}
         />
         {!collapsed && (
           <Text
@@ -99,7 +99,7 @@ const SideNav = ({ role, collapsed, onCollapse, onLogout }) => {
             })),
           }))}
           style={{
-            background: 'transparent',
+            background: '#0f0f0f',
             borderRight: 'none',
             color: '#fff',
           }}
@@ -113,7 +113,7 @@ const SideNav = ({ role, collapsed, onCollapse, onLogout }) => {
           bottom: 0,
           left: 0,
           width: '100%',
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+          borderTop: '1px solid #1f1f1f',
           background: '#001529',
           textAlign: 'center',
           padding: '16px',
@@ -124,7 +124,7 @@ const SideNav = ({ role, collapsed, onCollapse, onLogout }) => {
           icon={<LogoutOutlined style={{ color: '#fff' }} />}
           onClick={() => handleLogout()}
           style={{
-            color: '#fff',
+            color: '#ff4d4f',
             width: '100%',
             justifyContent: collapsed ? 'center' : 'flex-start',
             display: 'flex',
