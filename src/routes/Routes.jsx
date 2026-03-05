@@ -7,7 +7,8 @@ import {
   FastfoodOutlined,
   MonetizationOnOutlined,
   Settings,
-  Storage
+  EventAvailableOutlined,
+  ConfirmationNumberOutlined
 } from '@mui/icons-material';
 
 /**
@@ -26,7 +27,20 @@ const SideRoute = (role) => {
       roles: ['ADMIN', 'SUPER_ADMIN'],
       icon: <DashboardOutlined />
     },
-    
+    {
+      id: 2,
+      label: 'Eventos',
+      link: '/eventos',
+      roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
+      icon: <EventAvailableOutlined />
+    },
+    {
+      id: 3,
+      label: 'Bilhetes',
+      link: '/bilhetes',
+      roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
+      icon: <ConfirmationNumberOutlined />
+    },
     {
       id: 6,
       label: 'Movimentos',
