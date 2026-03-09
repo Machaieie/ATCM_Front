@@ -36,15 +36,11 @@ const Users = () => {
         fetchUsers();
       }, []);
 
-    const filteredUsers = users.filter(
-        (u) =>
-            u.fullname.toLowerCase().includes(search.toLowerCase()) ||
-            u.username.toLowerCase().includes(search.toLowerCase())
-    );
+ 
 
     // 💾 Registrar novo usuário
-    const handleSaveUser = () => {
-        form.validateFields().then((values) => {
+    const handleSaveUser = async () => {
+        form.validateFields().then(async (values) => {
             const novo = {
 
                 fullName: values.fullName,
@@ -56,9 +52,10 @@ const Users = () => {
 
             };
 
-            setUsers([...users, novo]);
+            const response = await axiosInstance.post("auth/register",novo);
             setOpenModal(false);
             form.resetFields();
+             fetchUsers();
         });
     };
 
@@ -164,7 +161,7 @@ const Users = () => {
             {/* Tabela */}
             <Table
                 columns={columns}
-                dataSource={filteredUsers}
+                dataSource={users}
                 rowKey="id"
                 pagination={{ pageSize: 5 }}
             />
