@@ -34,6 +34,13 @@ const SideRoute = (role) => {
       roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
       icon: <EventAvailableOutlined />
     },
+     {
+      id: 2,
+      label: 'Compras',
+      link: '/compras',
+      roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
+      icon: <EventAvailableOutlined />
+    },
     {
       id: 3,
       label: 'Bilhetes',

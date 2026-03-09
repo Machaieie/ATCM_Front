@@ -73,9 +73,7 @@ const Movimentos = () => {
 
     return (
         <div>
-            <Row>
-                <Col></Col>
-            </Row>
+            
             <Divider />
             <Table
                 rowKey="id"

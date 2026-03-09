@@ -1,62 +1,83 @@
 import React, { useEffect, useState } from "react";
 import {
-  Card,
-  Table,
+  Row,
+  Col,
   Input,
   DatePicker,
   Select,
   Button,
   Space,
-  Tag,
   message,
+  Modal,
+  Form,
+  TimePicker,
+  Divider
 } from "antd";
-import {
-  SearchOutlined,
-  CalendarOutlined,
-  FilterOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import axiosInstance from "../../httpCommom";
-import dayjs from "dayjs";
-
-const { RangePicker } = DatePicker;
+import EventCard from "../../components/cards/EventCard";
+import { toast } from "react-toastify";
 const { Option } = Select;
 
 const Eventos = () => {
+
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [nome, setNome] = useState("");
   const [data, setData] = useState(null);
   const [estado, setEstado] = useState(null);
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-    total: 0,
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [form] = Form.useForm();
 
-  const fetchEvents = async (page = 1, pageSize = 10) => {
-    setLoading(true);
+  const fetchEvents = async () => {
+
     try {
+
       const params = {
-        page: page - 1, // Spring Page começa do 0
-        size: pageSize,
         nome: nome || undefined,
-        data: data ? data.format("YYYY-MM-DD") : undefined,
+        data: data || undefined,
         estado: estado || undefined,
       };
 
       const { data: res } = await axiosInstance.get("/events", { params });
 
       setEvents(res.content);
-      setPagination({
-        current: res.number + 1,
-        pageSize: res.size,
-        total: res.totalElements,
-      });
+
     } catch (err) {
       console.error(err);
       message.error("Erro ao carregar eventos");
-    } finally {
-      setLoading(false);
+    }
+
+  };
+  const handleCreateEvent = async (values) => {
+    try {
+
+      const payload = {
+        name: values.name,
+        description: values.description,
+        date: values.date.format("YYYY-MM-DD"),
+        time: values.time.format("HH:mm"),
+        location: values.location,
+        precoNormal: Number(values.precoNormal),
+        precoVip: Number(values.precoVip),
+        lotacaoTotal: Number(values.lotacaoTotal)
+      };
+      console.log("payload ", payload)
+      const response = await axiosInstance.post("/events/criar", payload);
+console.log("response ", response)
+      if (response.status == 200) {
+        toast.success("Evento criado com sucesso");
+
+        setIsModalOpen(false);
+        form.resetFields();
+
+        fetchEvents();
+      }
+
+
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao criar evento");
     }
   };
 
@@ -64,124 +85,161 @@ const Eventos = () => {
     fetchEvents();
   }, []);
 
-  const handleTableChange = (pag) => {
-    fetchEvents(pag.current, pag.pageSize);
+  const handleBuy = (event) => {
+    message.success(`Comprar bilhete para ${event.name}`);
   };
-
-  const handleFilter = () => {
-    fetchEvents(1, pagination.pageSize);
-  };
-
-  const columns = [
-    {
-      title: "Nome",
-      dataIndex: "name",
-      key: "name",
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Descrição",
-      dataIndex: "description",
-      key: "description",
-      ellipsis: true,
-    },
-    {
-      title: "Data",
-      dataIndex: "date",
-      key: "date",
-      render: (date) => dayjs(date).format("DD/MM/YYYY"),
-    },
-    {
-      title: "Hora",
-      dataIndex: "time",
-      key: "time",
-    },
-    {
-      title: "Local",
-      dataIndex: "location",
-      key: "location",
-    },
-    {
-      title: "Preço Normal",
-      dataIndex: "precoNormal",
-      key: "precoNormal",
-      render: (preco) => `MZN ${preco.toLocaleString()}`,
-    },
-    {
-      title: "Preço VIP",
-      dataIndex: "precoVip",
-      key: "precoVip",
-      render: (preco) => `MZN ${preco.toLocaleString()}`,
-    },
-    {
-      title: "Lotação",
-      dataIndex: "lotacaoTotal",
-      key: "lotacaoTotal",
-      render: (lotacao, record) =>
-        `${record.bilhetesVendidos || 0} / ${lotacao}`,
-    },
-    {
-      title: "Estado",
-      dataIndex: "estado",
-      key: "estado",
-      render: (estado) => (
-        <Tag color={estado === "ATIVO" ? "green" : "red"}>{estado}</Tag>
-      ),
-    },
-  ];
 
   return (
     <div style={{ padding: 24 }}>
-      <Card
-        title={
-          <Space>
-            <FilterOutlined />
-            Filtros de Eventos
-          </Space>
-        }
-        style={{ marginBottom: 24 }}
-      >
-        <Space style={{ marginBottom: 16 }} wrap>
+
+      <Row gutter={[16, 16]} style={{ marginBottom: 20 }}>
+        <Col>
+          <Button type="primary" onClick={() => setIsModalOpen(true)}>
+            Novo Evento
+          </Button>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={6}>
           <Input
             placeholder="Nome do evento"
             prefix={<SearchOutlined />}
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            style={{ width: 200 }}
+            style={{ width: "100%" }}
           />
+        </Col>
 
+        <Col xs={24} sm={12} md={8} lg={6}>
           <DatePicker
-            placeholder="Data do evento"
-            prefix={<CalendarOutlined />}
-            value={data}
+            placeholder="Data"
+            style={{ width: "100%" }}
             onChange={(d) => setData(d)}
           />
+        </Col>
 
+        <Col xs={24} sm={12} md={8} lg={6}>
           <Select
             placeholder="Estado"
-            value={estado}
-            onChange={(val) => setEstado(val)}
-            style={{ width: 150 }}
+            style={{ width: "100%" }}
             allowClear
+            onChange={(v) => setEstado(v)}
           >
             <Option value="ATIVO">ATIVO</Option>
             <Option value="INATIVO">INATIVO</Option>
           </Select>
+        </Col>
 
-          <Button type="primary" onClick={handleFilter}>
+        <Col xs={24} sm={12} md={8} lg={6}>
+          <Button
+            type="primary"
+            style={{ width: "100%" }}
+            onClick={fetchEvents}
+          >
             Filtrar
           </Button>
-        </Space>
-      </Card>
+        </Col>
 
-      <Table
-        columns={columns}
-        dataSource={events}
-        rowKey="id"
-        loading={loading}
-        pagination={pagination}
-        onChange={handleTableChange}
-      />
+      </Row>
+      <Divider />
+      {/* EVENTOS */}
+      <Row gutter={[24, 24]}>
+
+        {events.map((event) => (
+          <Col
+            key={event.id}
+            xs={24}
+            sm={12}
+            md={8}
+            lg={8}
+          >
+            <EventCard event={event} onBuy={handleBuy} />
+          </Col>
+        ))}
+
+      </Row>
+
+      <Modal
+        title="Cadastrar Novo Evento"
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+      >
+
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={handleCreateEvent}
+        >
+
+          <Form.Item
+            label="Nome do Evento"
+            name="name"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Descrição"
+            name="description"
+          >
+            <Input.TextArea rows={3} />
+          </Form.Item>
+
+          <Form.Item
+            label="Data"
+            name="date"
+            rules={[{ required: true }]}
+          >
+            <DatePicker style={{ width: "100%" }} />
+          </Form.Item>
+
+          <Form.Item
+            label="Hora"
+            name="time"
+            rules={[{ required: true }]}
+          >
+            <TimePicker style={{ width: "100%" }} format="HH:mm" />
+          </Form.Item>
+
+          <Form.Item
+            label="Local"
+            name="location"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Preço Normal"
+            name="precoNormal"
+            rules={[{ required: true }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+
+          <Form.Item
+            label="Preço VIP"
+            name="precoVip"
+          >
+            <Input type="number" />
+          </Form.Item>
+
+          <Form.Item
+            label="Lotação Total"
+            name="lotacaoTotal"
+            rules={[{ required: true }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+
+          <Button type="primary" htmlType="submit" block>
+            Criar Evento
+          </Button>
+
+        </Form>
+
+      </Modal>
+
     </div>
   );
 };

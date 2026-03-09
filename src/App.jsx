@@ -14,25 +14,23 @@ import Eventos from "./screens/eventos/Eventos"
 import Bilhetes from "./screens/bilhetes/Bilhetes"
 import Users from "./screens/usuarios/Users";
 import Movimentos from "./screens/moviments/Movimentos";
+import Compras from "./screens/eventos/Compras";
 
 function App() {
   return (
     <>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          {/* --- Rotas públicas --- */}
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<Login />} />
           </Route>
 
-          {/* --- Página de acesso negado --- */}
           <Route path="unauthorized" element={<Unauthorized />} />
 
-          {/* --- Rotas protegidas --- */}
 
           <Route element={<AdminLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
-
+            <Route path="compras" element={<Compras />} />
             <Route path="movimentos" element={<Movimentos />} />
             <Route path="eventos" element={<Eventos />} />
             <Route path="bilhetes" element={<Bilhetes />} />
