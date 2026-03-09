@@ -237,6 +237,7 @@ const Users = () => {
                         <Select placeholder="Selecione">
                             <Option value="ADMIN">ADMIN</Option>
                             <Option value="EMPLOYEE">Funcionario</Option>
+                             <Option value="CLIENT">Cliente</Option>
 
                         </Select>
                     </Form.Item>

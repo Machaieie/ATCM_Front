@@ -31,7 +31,7 @@ const SideRoute = (role) => {
       id: 2,
       label: 'Eventos',
       link: '/eventos',
-      roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
+      roles: ['ADMIN', 'EMPLOYEE'],
       icon: <EventAvailableOutlined />
     },
      {
@@ -45,7 +45,7 @@ const SideRoute = (role) => {
       id: 3,
       label: 'Bilhetes',
       link: '/bilhetes',
-      roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
+      roles: ['ADMIN', 'EMPLOYEE'],
       icon: <ConfirmationNumberOutlined />
     },
     {
@@ -66,7 +66,7 @@ const SideRoute = (role) => {
       id: 8,
       label: 'Configurações',
       link: '/configuracoes',
-      roles: ['ADMIN', 'EMPLOYEE'],
+      roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
       icon: <Settings />
     }
   ];
