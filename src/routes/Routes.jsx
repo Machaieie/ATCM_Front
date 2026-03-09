@@ -20,13 +20,13 @@ const SideRoute = (role) => {
   const normalizedRole = role.toUpperCase();
 
   const routes = [
-    {
-      id: 1,
-      label: 'Dashboard',
-      link: '/dashboard',
-      roles: ['ADMIN', 'SUPER_ADMIN'],
-      icon: <DashboardOutlined />
-    },
+    // {
+    //   id: 1,
+    //   label: 'Dashboard',
+    //   link: '/dashboard',
+    //   roles: ['ADMIN', 'SUPER_ADMIN'],
+    //   icon: <DashboardOutlined />
+    // },
     {
       id: 2,
       label: 'Eventos',
@@ -38,7 +38,7 @@ const SideRoute = (role) => {
       id: 2,
       label: 'Compras',
       link: '/compras',
-      roles: ['ADMIN', 'EMPLOYEE', 'CLIENT'],
+      roles: [ 'EMPLOYEE', 'CLIENT'],
       icon: <EventAvailableOutlined />
     },
     {
@@ -48,13 +48,13 @@ const SideRoute = (role) => {
       roles: ['ADMIN', 'EMPLOYEE'],
       icon: <ConfirmationNumberOutlined />
     },
-    {
-      id: 6,
-      label: 'Movimentos',
-      link: '/movimentos',
-      roles: ['ADMIN'],
-      icon: <MonetizationOnOutlined />
-    },
+    // {
+    //   id: 6,
+    //   label: 'Movimentos',
+    //   link: '/movimentos',
+    //   roles: ['ADMIN'],
+    //   icon: <MonetizationOnOutlined />
+    // },
     {
       id: 7,
       label: 'Usuários',
